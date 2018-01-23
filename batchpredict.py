@@ -8,8 +8,7 @@ This is a temporary script file.
 import sys
 import subprocess
 import os
-sys.path.insert(0,'/home/mandren/qmk/caffe/python')
-sys.path.insert(0,'/home/mandren/qmk/caffe/python/proto')
+sys.path.insert(0,pycaffePath)
 import caffe
 import numpy as np
 import pandas as pd
@@ -55,8 +54,8 @@ def compute_real_angle(order,size,num):
     return angle
 	
 def predict_VP2(img_file_list):
-    caffe_model=r'/home/mandren/qmk/caffe/VP2-noscale/3d_iter_66000.caffemodel'
-    deploy_proto=r'/home/mandren/qmk/caffe/VP2-noscale/vp2deploy.prototxt' 
+    caffe_model=
+    deploy_proto=
     net = caffe.Net(deploy_proto,caffe_model,caffe.TEST)
     net.blobs['data'].reshape(len(img_file_list),3,112,112)	
     mean_file=r'/home/mandren/qmk/caffe/VP2-noscale/mean2.npy'
@@ -68,11 +67,11 @@ def predict_VP2(img_file_list):
     angle1=compute_real_angle(order,shape,2)#这里得到的shape为高，宽，即行数-列数,预测得到的是变化后的图像中的角度，需要转换成原来的图像的角度
     return angle1
 def predict_VP1(img_file_list):
-    caffe_model=r'/home/mandren/qmk/caffe/VP1-noscale/1.caffemodel'
-    deploy_proto=r'/home/mandren/qmk/caffe/VP1-noscale/vp1deploy.prototxt' 
+    caffe_model=
+    deploy_proto=
     net = caffe.Net(deploy_proto,caffe_model,caffe.TEST)
     net.blobs['data'].reshape(len(img_file_list),3,112,112)	
-    mean_file=r'/home/mandren/qmk/caffe/VP1-noscale/mean.npy'
+    mean_file=
     [data,shape]=transform(img_file_list,mean_file)
     net.blobs['data'].data[...]=data
     out = net.forward()
@@ -82,12 +81,12 @@ def predict_VP1(img_file_list):
     return angle1
 def get2DBoundingBox(img_file_list):
     pwd=os.getcwd()
-    os.chdir(r"/home/mandren/qmk/yolo9000/darknet")
+    os.chdir()
     boxpoint=np.zeros((len(img_file_list),4))
     k=0
     for i in img_file_list:
         subprocess.call(["./darknet", "detect" ,"cfg/yolo.cfg","yolo.weights","%s"%i,"-thresh","0.4"])
-        file=open(r'/home/mandren/qmk/yolo9000/darknet/result.txt','r')
+        file=open(,'r')
         a=file.readline()
         if(len(a)>0):
             box=tuple(map(int,a.strip().split(',')))
@@ -95,7 +94,7 @@ def get2DBoundingBox(img_file_list):
         else:
             file.close()
             subprocess.call(["./darknet", "detect" ,"cfg/yolo.cfg","yolo.weights","%s"%i,"-thresh","0.3"])
-            file=open(r'/home/mandren/qmk/yolo9000/darknet/result.txt','r')
+            file=open(,'r')
             a=file.readline()
             if(len(a)>0):
                 box=tuple(map(int,a.strip().split(',')))
@@ -103,7 +102,7 @@ def get2DBoundingBox(img_file_list):
             else:
                 file.close()
                 subprocess.call(["./darknet", "detect" ,"cfg/yolo.cfg","yolo.weights","%s"%i,"-thresh","0.2"])
-                file=open(r'/home/mandren/qmk/yolo9000/darknet/result.txt','r')
+                file=open(,'r')
                 a=file.readline()
                 if(len(a)>0):
                     box=tuple(map(int,a.strip().split(',')))
@@ -111,7 +110,7 @@ def get2DBoundingBox(img_file_list):
                 else:
                     file.close()
                     subprocess.call(["./darknet", "detect" ,"cfg/yolo.cfg","yolo.weights","%s"%i,"-thresh","0.1"])
-                    file=open(r'/home/mandren/qmk/yolo9000/darknet/result.txt','r')
+                    file=open(,'r')
                     a=file.readline()
                     box=tuple(map(int,a.strip().split(',')))
                     file.close()
