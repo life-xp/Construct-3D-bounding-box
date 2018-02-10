@@ -99,4 +99,3 @@ def transformBoxtoPalne(a,img,angle1,method='seperate'):
             PerspectiveImgLeft=Image.fromarray(PerspectiveImgLeft)
             PerspectiveImgRight=Image.fromarray(PerspectiveImgRight)
             return [PerspectiveImgTop,PerspectiveImgLeft,PerspectiveImgRight]
-
